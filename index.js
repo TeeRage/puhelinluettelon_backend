@@ -75,9 +75,19 @@ app.post('/api/persons', (request, response) => {
 
   const body = request.body
 
-  if (!body) {
+  if (!body) { //Sisältö puuttuu 
     return response.status(400).json({ 
       error: 'content missing' 
+    })
+  }//Nimi tai numero puuttuu
+  else if(!body.name || !body.number){
+    return response.status(400).json({ 
+      error: 'name or number missing' 
+    })
+  }//Nimi löytyy jo luettelosta
+  else if(persons.map(function(henkilo){return henkilo.name}).includes(body.name)){
+    return response.status(400).json({ 
+      error: 'name must be unique' 
     })
   }
 
@@ -88,7 +98,6 @@ app.post('/api/persons', (request, response) => {
   }
 
   persons = persons.concat(person)
-
   response.json(person)
 })
 

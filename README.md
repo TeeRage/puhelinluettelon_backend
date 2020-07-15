@@ -22,3 +22,9 @@ Testaus Visual Studio Coden REST-clientillä tai POSTMANilla.
 Laajenna backendia siten, että uusia puhelintietoja on mahdollista lisätä osoitteeseen http://localhost:3001/api/persons tapahtuvalla HTTP POST -pyynnöllä.
 
 Generoi uuden puhelintiedon tunniste funktiolla Math.random. Käytä riittävän isoa arvoväliä, jotta arvottu id on riittävän suurella todennäköisyydellä sellainen, joka ei ole jo käytössä.
+
+###### 3.6: puhelinluettelon backend step6
+Tee uuden numeron lisäykseen virheiden käsittely. Pyyntö ei saa onnistua, jos
+- nimi tai numero puuttuu
+- lisättävä nimi on jo luettelossa
+Vastaa asiaankuuluvalla statuskoodilla ja liitä vastaukseen mukaan myös tieto, joka kertoo virheen syyn
