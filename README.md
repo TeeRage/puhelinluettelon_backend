@@ -16,4 +16,9 @@ Jos id:tä vastaavaa puhelinnumerotietoa ei ole, tulee palvelimen vastata asianm
 
 ###### 3.4: puhelinluettelon backend step4
 Toiminnallisuus, jonka avulla puhelinnumerotieto on mahdollista poistaa numerotiedon yksilöivään URL:iin tehtävällä HTTP DELETE -pyynnöllä.
-Testaus Visual Studio Coden REST-clientillä.
+Testaus Visual Studio Coden REST-clientillä tai POSTMANilla.
+
+###### 3.5: puhelinluettelon backend step5
+Laajenna backendia siten, että uusia puhelintietoja on mahdollista lisätä osoitteeseen http://localhost:3001/api/persons tapahtuvalla HTTP POST -pyynnöllä.
+
+Generoi uuden puhelintiedon tunniste funktiolla Math.random. Käytä riittävän isoa arvoväliä, jotta arvottu id on riittävän suurella todennäköisyydellä sellainen, joka ei ole jo käytössä.

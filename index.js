@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json()) 
+
 //Kovakoodattu puhelinluettelo
 let persons = [
   {
@@ -24,6 +26,15 @@ let persons = [
     id: 4
   }
 ]
+
+//http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
+app.get('/info', (req, res) => {
+
+  let pvm = new Date(Date.now()).toUTCString()
+  let teksti = "Puhelinluettelossa on " + persons.length +":n henkilön tiedot"
+
+  res.send('<p>'+ teksti +'</p>' + '<p>' + pvm + '</p>')
+})
 
 //http://localhost:3001/api/persons kovakoodattu taulukko puhelinnumerotiedoista
 app.get('/api/persons', (req, res) => {
@@ -51,13 +62,34 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-//http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
-app.get('/info', (req, res) => {
+//Uniikin id:n luomista varten, arvotaan jokin satunnaisluku
+const generateId = () => {
 
-  let pvm = new Date(Date.now()).toUTCString()
-  let teksti = "Puhelinluettelossa on " + persons.length +":n henkilön tiedot"
+  const maxId = Math.floor(Math.random() * 100000)
+  return maxId
+}
 
-  res.send('<p>'+ teksti +'</p>' + '<p>' + pvm + '</p>')
+//Vaatii alussa määritetyn app.use(express.json())
+//Lisää noteseihin uuden noten (POST)
+app.post('/api/persons', (request, response) => {
+
+  const body = request.body
+
+  if (!body) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId()
+  }
+
+  persons = persons.concat(person)
+
+  response.json(person)
 })
 
 //Portti, jota kuunnellaan
