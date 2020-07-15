@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 
+//Kovakoodattu puhelinluettelo
 let persons = [
   {
     name: 'Arto Hellas', 
@@ -24,14 +25,21 @@ let persons = [
   }
 ]
 
-app.get('/', (req, res) => {
-  res.send('<h1>Tehtävät 3.1.-3.6.</h1>')
-})
-
+//http://localhost:3001/api/persons kovakoodattu taulukko puhelinnumerotiedoista
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
+//http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
+app.get('/info', (req, res) => {
+
+  let pvm = new Date(Date.now()).toUTCString()
+  let teksti = "Puhelinluettelossa on " + persons.length +":n henkilön tiedot"
+
+  res.send('<p>'+ teksti +'</p>' + '<p>' + pvm + '</p>')
+})
+
+//Portti, jota kuunnellaan
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
