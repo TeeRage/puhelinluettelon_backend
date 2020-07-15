@@ -30,6 +30,18 @@ app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
+//Yksittäisen puhelinnumerotiedon näyttäminen. Esim. id:n 3 omaavan numerotiedon url on http://localhost:3001/api/persons/3
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const person = persons.find(person => person.id === id)
+  
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+})
+
 //http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
 app.get('/info', (req, res) => {
 
