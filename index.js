@@ -42,6 +42,15 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
+//Yksittäisen yhteystiedon poistaminen tietokannasta (palautuu alkutilaansa uudelleen käynnistettäessä)
+//Käyttö Postmanin tai VCS REST-clientin delete-pyynnöllä
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  persons = persons.filter(person => person.id !== id)
+
+  response.status(204).end()
+})
+
 //http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
 app.get('/info', (req, res) => {
 
