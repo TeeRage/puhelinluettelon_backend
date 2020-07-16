@@ -28,3 +28,10 @@ Tee uuden numeron lisäykseen virheiden käsittely. Pyyntö ei saa onnistua, jos
 - nimi tai numero puuttuu
 - lisättävä nimi on jo luettelossa
 Vastaa asiaankuuluvalla statuskoodilla ja liitä vastaukseen mukaan myös tieto, joka kertoo virheen syyn
+
+###### 3.7: puhelinluettelon backend step7
+Lisätty loggausta tekevä middleware morgan (https://github.com/expressjs/morgan). 
+Konfiguroitu logaamaan konsoliin tiny-konfiguraation mukaisesti.
+
+
+
