@@ -1,11 +1,16 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
 
-//Konfiguroidaan Morgan logaamaan konsoliin tiny-konfiguraation mukaisesti
-app.use(morgan('tiny'))
+app.use(cors())
 
 app.use(express.json()) 
+
+//Konfiguroidaan Morgan logaamaan konsoliin
+//app.use(morgan('tiny'))
+morgan.token('content', function(req, res) {return JSON.stringify(req.body)})
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
 //Kovakoodattu puhelinluettelo
 let persons = [
@@ -28,6 +33,11 @@ let persons = [
     name: 'Mary Poppendieck', 
     number: '39-23-6423122',
     id: 4
+  },
+  {
+    name: 'Tea Antila', 
+    number: '39-23-6423122',
+    id: 5
   }
 ]
 

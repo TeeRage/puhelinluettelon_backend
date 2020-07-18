@@ -1,4 +1,4 @@
-# fullstack-hy2020_Teht_3.1.-3.6.
+# Full Stack open 2020
 ## Osan 3 tehtäväsarja
 
 Tehtäväsarja tehty kurssin ohjeiden mukaan omaan git-repositorioonsa.
@@ -33,5 +33,10 @@ Vastaa asiaankuuluvalla statuskoodilla ja liitä vastaukseen mukaan myös tieto,
 Lisätty loggausta tekevä middleware morgan (https://github.com/expressjs/morgan). 
 Konfiguroitu logaamaan konsoliin tiny-konfiguraation mukaisesti.
 
+###### 3.8*: puhelinluettelon backend step8
+Konfiguroi morgania siten, että se näyttää myös HTTP POST -pyyntöjen mukana tulevan datan.
 
+###### 3.9 puhelinluettelon backend step9
+Laitettu backend toimimaan edellisessä osassa tehdyn puhelinluettelon frontendin kanssa muilta osin, paitsi mahdollisen puhelinnumeron muutoksen osalta.
+Asennettu ja otettu käyttöön cors
 
