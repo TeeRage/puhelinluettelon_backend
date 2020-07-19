@@ -4,6 +4,9 @@
 Tehtäväsarja tehty kurssin ohjeiden mukaan omaan git-repositorioonsa.
 
 #### Linkki internetissä olevaan sovelluksen backendiin:
+
+Puhelinluettelo: https://calm-savannah-45350.herokuapp.com
+
 Info: https://calm-savannah-45350.herokuapp.com/info
 
 Tietokanta: https://calm-savannah-45350.herokuapp.com/api/persons 
@@ -54,3 +57,4 @@ Testaa selaimen ja postmanin tai VS Code REST-clientin avulla, että internetiss
 ###### 3.11 puhelinluettelo full stack
 Generoitu frontendistä tuotantoversio ja lisätty se internetissä olevaan sovellukseesi tässä osassa esiteltyä menetelmää noudattaen.
 Backendiin lisätty build sekä expressin middlewaren static (app.use(express.static('build')))
+https://calm-savannah-45350.herokuapp.com 
