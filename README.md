@@ -5,6 +5,7 @@ Tehtäväsarja tehty kurssin ohjeiden mukaan omaan git-repositorioonsa.
 
 #### Linkki internetissä olevaan sovelluksen backendiin:
 Info: https://calm-savannah-45350.herokuapp.com/info
+
 Tietokanta: https://calm-savannah-45350.herokuapp.com/api/persons 
 
 ###### 3.1 puhelinluettelon backend step1
@@ -49,3 +50,7 @@ Vie sovelluksen backend internetiin, esim. Herokuun.
 Tee repositorion juureen tiedosto README.md ja lisää siihen linkki internetissä olevaan sovellukseesi.
 https://calm-savannah-45350.herokuapp.com/api/persons
 Testaa selaimen ja postmanin tai VS Code REST-clientin avulla, että internetissä oleva backend toimii.
+
+###### 3.11 puhelinluettelo full stack
+Generoitu frontendistä tuotantoversio ja lisätty se internetissä olevaan sovellukseesi tässä osassa esiteltyä menetelmää noudattaen.
+Backendiin lisätty build sekä expressin middlewaren static (app.use(express.static('build')))

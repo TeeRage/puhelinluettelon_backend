@@ -3,6 +3,7 @@ const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(express.json()) 
 
@@ -39,6 +40,12 @@ let persons = [
     id: 5
   }
 ]
+
+//aloitussivu
+app.get('/', (req, res) => {
+  res.send('<p>Moi</p>')
+})
+
 
 //http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
 app.get('/info', (req, res) => {
