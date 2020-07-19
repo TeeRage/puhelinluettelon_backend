@@ -3,6 +3,10 @@
 
 Tehtäväsarja tehty kurssin ohjeiden mukaan omaan git-repositorioonsa.
 
+#### Linkki internetissä olevaan sovelluksen backendiin:
+Info: https://calm-savannah-45350.herokuapp.com/info
+Tietokanta: https://calm-savannah-45350.herokuapp.com/api/persons 
+
 ###### 3.1 puhelinluettelon backend step1
 Node-sovellus, joka tarjoaa osoitteessa http://localhost:3001/api/persons kovakoodatun taulukon puhelinnumerotietoja
 
@@ -38,5 +42,10 @@ Konfiguroi morgania siten, että se näyttää myös HTTP POST -pyyntöjen mukan
 
 ###### 3.9 puhelinluettelon backend step9
 Laitettu backend toimimaan edellisessä osassa tehdyn puhelinluettelon frontendin kanssa muilta osin, paitsi mahdollisen puhelinnumeron muutoksen osalta.
-Asennettu ja otettu käyttöön cors
+Cors asennettu ja otettu käyttöön.
 
+###### 3.10 puhelinluettelon backend step10
+Vie sovelluksen backend internetiin, esim. Herokuun.
+Tee repositorion juureen tiedosto README.md ja lisää siihen linkki internetissä olevaan sovellukseesi.
+https://calm-savannah-45350.herokuapp.com/api/persons
+Testaa selaimen ja postmanin tai VS Code REST-clientin avulla, että internetissä oleva backend toimii.
