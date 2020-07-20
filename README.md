@@ -58,3 +58,13 @@ Testaa selaimen ja postmanin tai VS Code REST-clientin avulla, että internetiss
 Generoitu frontendistä tuotantoversio ja lisätty se internetissä olevaan sovellukseesi tässä osassa esiteltyä menetelmää noudattaen.
 Backendiin lisätty build sekä expressin middlewaren static (app.use(express.static('build')))
 https://calm-savannah-45350.herokuapp.com 
+
+###### 3.12: tietokanta komentoriviltä
+Luotu puhelinluettelo-sovellukselle pilvessä oleva mongo Mongo DB Atlaksen avulla.
+Lisätty tiedosto mongo.js, jonka avulla tietokanta voi lisätä puhelinnumeroja sekä listata kaikki kannassa olevat numerot.
+
+Jos annetaan komentokehotteessa kolme komentoriviparametria (joista ensimmäinen on salasana) esim 'node mongo.js salasana Anna 040-1234556',
+ohjelma tulostaa "Lisätty Anna 040-1234556 puhlinluetteloon" ja lisää uuden yhteystiedon tietokantaan.
+Jos komentoriviparametreina ei ole muuta kuin salasana, tulostaa ohjelma tietokannassa olevat numerotiedot.
+Huom. salasana on salainen.
+
