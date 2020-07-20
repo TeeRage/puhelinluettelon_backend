@@ -68,3 +68,6 @@ ohjelma tulostaa "Lisätty Anna 040-1234556 puhlinluetteloon" ja lisää uuden y
 Jos komentoriviparametreina ei ole muuta kuin salasana, tulostaa ohjelma tietokannassa olevat numerotiedot.
 Huom. salasana on salainen.
 
+###### 3.13: puhelinluettelo ja tietokanta, step1
+Backend hakee näytettävät puhelintiedot MongoDB tietokannasta.
+Tehty Mongoose-spesifinen koodi omaan moduuliin samaan tapaan kuin luvussa Tietokantamäärittelyjen eriyttäminen moduuliksi.

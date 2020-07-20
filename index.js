@@ -1,7 +1,11 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/person')
 
 app.use(express.static('build'))
 app.use(cors())
@@ -12,30 +16,37 @@ app.use(express.json())
 morgan.token('content', function(req, res) {return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
+//MongoDB:stä haettu puhelinluettelon sisältö osoitteeseen http://localhost:3001/api/persons
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
+})
+
 //Kovakoodattu puhelinluettelo
 let persons = [
   {
-    name: 'Arto Hellas', 
+    name: 'Arto Hellas',
     number: '040-123456',
     id: 1
   },
   {
-    name: 'Ada Lovelace', 
+    name: 'Ada Lovelace',
     number: '39-44-5323523',
     id: 2,
   },
   {
-    name: 'Dan Abramov', 
+    name: 'Dan Abramov',
     number: '12-43-234345',
     id: 3
   },
   {
-    name: 'Mary Poppendieck', 
+    name: 'Mary Poppendieck',
     number: '39-23-6423122',
     id: 4
   },
   {
-    name: 'Kurkkumopo', 
+    name: 'Kurkkumopo',
     number: '39-23-6423122',
     id: 5
   }
@@ -46,26 +57,27 @@ app.get('/', (req, res) => {
   res.send('<p>Moi</p>')
 })
 
-
-//http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovelluksen muistissa olevassa taulukossa on
+//http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovellukseen kovakoodatussa taulukossa on
 app.get('/info', (req, res) => {
-
   let pvm = new Date(Date.now()).toUTCString()
   let teksti = "Puhelinluettelossa on " + persons.length +":n henkilön tiedot"
-
   res.send('<p>'+ teksti +'</p>' + '<p>' + pvm + '</p>')
 })
 
+/*
+//Haetaan Mongosta jatkossa puhelinluettelon tiedot
 //http://localhost:3001/api/persons kovakoodattu taulukko puhelinnumerotiedoista
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
+*/
 
 //Yksittäisen puhelinnumerotiedon näyttäminen. Esim. id:n 3 omaavan numerotiedon url on http://localhost:3001/api/persons/3
 app.get('/api/persons/:id', (request, response) => {
+
   const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-  
+  const person = persons.find(person => person.id === id) 
+
   if (person) {
     response.json(person)
   } else {
@@ -78,13 +90,11 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
-
   response.status(204).end()
 })
 
 //Uniikin id:n luomista varten, arvotaan jokin satunnaisluku
 const generateId = () => {
-
   const maxId = Math.floor(Math.random() * 100000)
   return maxId
 }
@@ -121,8 +131,8 @@ app.post('/api/persons', (request, response) => {
   response.json(person)
 })
 
-//Portti, jota kuunnellaan
-const PORT = process.env.PORT || 3001
+//Portti, jota kuunnellaan, jos ei ole .env -tiedostoa, niin const PORT = process.env.PORT || 3100
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
