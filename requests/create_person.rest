@@ -1,7 +1,8 @@
-POST https://calm-savannah-45350.herokuapp.com/api/persons
+//POST https://calm-savannah-45350.herokuapp.com/api/persons
+POST http://localhost:3001/api/persons/
 Content-Type: application/json
 
 {
-    "name": "Tea Antila",
-    "number": "050-123456"
+    "name": "Testi5",
+    "number": "050-122345566"
 }

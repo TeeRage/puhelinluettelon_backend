@@ -1,26 +1,80 @@
-require('dotenv').config()
-
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+require('dotenv').config()
+
+const Person = require('./models/person')
 const morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
-const Person = require('./models/person')
 
-app.use(express.static('build'))
 app.use(cors())
-app.use(express.json()) 
+app.use(bodyParser.json())
+app.use(express.static('build'))
+app.use(express.json())
 
 //Konfiguroidaan Morgan logaamaan konsoliin
 //app.use(morgan('tiny'))
 morgan.token('content', function(req, res) {return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
+//aloitussivu
+app.get('/', (req, res) => {
+  res.send('<p>Puhelinluettelo</p>')
+})
+
 //MongoDB:stä haettu puhelinluettelon sisältö osoitteeseen http://localhost:3001/api/persons
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
+})
+
+//Uuden yhteystiedon lisääminen MondoDB tietokantaan
+app.post('/api/persons', (request, response) => {
+  
+  const body = request.body
+  
+  if (!body.name || !body.number) { //Nimi tai numero puuttuu
+    return response.status(400).json({ 
+      error: 'name or number missing' 
+    })
+  }
+
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  })
+
+  person.save().then(savedPerson => {    
+    response.json(savedPerson)
+  })
+})
+
+//Yksittäisen yhteystiedon näyttäminen id:n perusteella
+app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id)
+    .then(person => {
+      if(person){
+        response.json(person)
+      }
+      else{
+        console.log("Annetulla haulla ei löytynyt tuloksia")
+        response.status(404).end()
+      }
+  })
+  .catch(error =>{
+    console.log(error)
+    response.status(400).send({ error: 'malformatted id' })
+  })
+})
+
+//Poistaminen MongoDB-tietokannasta id:n perusteella
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 //Kovakoodattu puhelinluettelo
@@ -52,83 +106,11 @@ let persons = [
   }
 ]
 
-//aloitussivu
-app.get('/', (req, res) => {
-  res.send('<p>Moi</p>')
-})
-
-//http://localhost:3001/info kertoo pyynnön tekohetken sekä kuinka monta puhelinluettelotietoa sovellukseen kovakoodatussa taulukossa on
+//../info kertoo pyynnön tekohetken sekä yhteystietojen lukumäärän
 app.get('/info', (req, res) => {
   let pvm = new Date(Date.now()).toUTCString()
   let teksti = "Puhelinluettelossa on " + persons.length +":n henkilön tiedot"
   res.send('<p>'+ teksti +'</p>' + '<p>' + pvm + '</p>')
-})
-
-/*
-//Haetaan Mongosta jatkossa puhelinluettelon tiedot
-//http://localhost:3001/api/persons kovakoodattu taulukko puhelinnumerotiedoista
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
-*/
-
-//Yksittäisen puhelinnumerotiedon näyttäminen. Esim. id:n 3 omaavan numerotiedon url on http://localhost:3001/api/persons/3
-app.get('/api/persons/:id', (request, response) => {
-
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id) 
-
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
-})
-
-//Yksittäisen yhteystiedon poistaminen tietokannasta (palautuu alkutilaansa uudelleen käynnistettäessä)
-//Käyttö Postmanin tai VCS REST-clientin delete-pyynnöllä
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-  response.status(204).end()
-})
-
-//Uniikin id:n luomista varten, arvotaan jokin satunnaisluku
-const generateId = () => {
-  const maxId = Math.floor(Math.random() * 100000)
-  return maxId
-}
-
-//Vaatii alussa määritetyn app.use(express.json())
-//Lisää noteseihin uuden noten (POST)
-app.post('/api/persons', (request, response) => {
-
-  const body = request.body
-
-  if (!body) { //Sisältö puuttuu 
-    return response.status(400).json({ 
-      error: 'content missing' 
-    })
-  }//Nimi tai numero puuttuu
-  else if(!body.name || !body.number){
-    return response.status(400).json({ 
-      error: 'name or number missing' 
-    })
-  }//Nimi löytyy jo luettelosta
-  else if(persons.map(function(henkilo){return henkilo.name}).includes(body.name)){
-    return response.status(400).json({ 
-      error: 'name must be unique' 
-    })
-  }
-
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: generateId()
-  }
-  
-  persons = persons.concat(person)
-  response.json(person)
 })
 
 //Portti, jota kuunnellaan, jos ei ole .env -tiedostoa, niin const PORT = process.env.PORT || 3100
