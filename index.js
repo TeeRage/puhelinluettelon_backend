@@ -23,14 +23,15 @@ app.get('/', (req, res) => {
 })
 
 //MongoDB:stä haettu puhelinluettelon sisältö osoitteeseen http://localhost:3001/api/persons
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
+  .catch(error => next(error)) //Välitetään virheviesti eteenpäin middlewarelle
 })
 
 //Uuden yhteystiedon lisääminen MondoDB tietokantaan
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   
   const body = request.body
   
@@ -48,10 +49,11 @@ app.post('/api/persons', (request, response) => {
   person.save().then(savedPerson => {    
     response.json(savedPerson)
   })
+  .catch(error => next(error))
 })
 
 //Yksittäisen yhteystiedon näyttäminen id:n perusteella
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(person => {
       if(person){
@@ -62,20 +64,31 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()
       }
   })
-  .catch(error =>{
-    console.log(error)
-    response.status(400).send({ error: 'malformatted id' })
-  })
+  .catch(error => next(error))
 })
 
 //Poistaminen MongoDB-tietokannasta id:n perusteella
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {      
+    .then(result => {
+      console.log("Annetulla haulla ei löytynyt tuloksia")
       response.status(204).end()
     })
     .catch(error => next(error))
 })
+
+//Virheidenkäsittelijä
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  //Onko virhe CastError (virheellinen olioId) vai joku muu
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+  //Jos ei ole CastError, siirretään Expressin oletusarvoisen virheidenkäsittelijän hoidettavavksi
+  next(error)
+}
+app.use(errorHandler)
 
 //Kovakoodattu puhelinluettelo
 let persons = [

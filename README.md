@@ -75,3 +75,7 @@ Tässä vaiheessa ei välitetä siitä, onko tietokannassa jo henkilöä jolla o
 
 ###### 3.15: puhelinluettelo ja tietokanta, step3
 Numerotietojen poistaminen päivittyy tietokantaan.
+
+###### 3.16: puhelinluettelo ja tietokanta, step4
+Virheidenkäsittely keskitetty middlewareen.
+
