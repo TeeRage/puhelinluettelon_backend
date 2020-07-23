@@ -71,7 +71,7 @@ app.get('/api/persons/:id', (request, response) => {
 //Poistaminen MongoDB-tietokannasta id:n perusteella
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(result => {      
       response.status(204).end()
     })
     .catch(error => next(error))

@@ -72,3 +72,6 @@ Tehty Mongoose-spesifinen koodi omaan moduuliin models/person sekä otettu käyt
 Muutettu backendiä siten, että uudet numerot tallennetaan tietokantaan.
 Varmistettu, että frontend toimii muutosten jälkeen.
 Tässä vaiheessa ei välitetä siitä, onko tietokannassa jo henkilöä jolla on sama nimi kuin lisättävällä.
+
+###### 3.15: puhelinluettelo ja tietokanta, step3
+Numerotietojen poistaminen päivittyy tietokantaan.
