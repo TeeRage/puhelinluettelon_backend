@@ -70,9 +70,29 @@ app.get('/api/persons/:id', (request, response, next) => {
 //Poistaminen MongoDB-tietokannasta id:n perusteella
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
-      console.log("Annetulla haulla ei löytynyt tuloksia")
+    .then(result => {//Onnistunut joko poistettu tai ei löytynyt id:tä, mutta se on oikeaa muotoa
+      console.log("Poistaminen onnistui")
       response.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
+//Puhelinnumeron päivittäminen
+app.put('/api/persons/:id', (request, response, next) => {
+
+  const body = request.body
+
+  console.log("Nimi: ", body.name)
+  console.log("Nimi: ", body.number)
+
+  const person ={
+    name: body.name,
+    number: body.number
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updateNumber => {
+      response.json(updateNumber)
     })
     .catch(error => next(error))
 })

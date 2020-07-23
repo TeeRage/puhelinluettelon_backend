@@ -79,3 +79,8 @@ Numerotietojen poistaminen päivittyy tietokantaan.
 ###### 3.16: puhelinluettelo ja tietokanta, step4
 Virheidenkäsittely keskitetty middlewareen.
 
+###### 3.17*: puhelinluettelo ja tietokanta, step5
+Jos frontendissä annetaan numero henkilölle, joka on jo olemassa, päivittää frontend tehtävässä 2.18 tehdyn toteutuksen ansiosta tiedot uudella numerolla tekemällä HTTP PUT -pyynnön henkilön tietoja vastaavaan url:iin.
+
+
+
