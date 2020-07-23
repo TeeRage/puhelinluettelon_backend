@@ -12,8 +12,7 @@ app.use(bodyParser.json())
 app.use(express.static('build'))
 app.use(express.json())
 
-//Konfiguroidaan Morgan logaamaan konsoliin
-//app.use(morgan('tiny'))
+//Konfiguroidaan Morgan logaamaan konsoliin, app.use(morgan('tiny')) 
 morgan.token('content', function(req, res) {return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
@@ -28,6 +27,13 @@ app.get('/api/persons', (request, response, next) => {
     response.json(persons)
   })
   .catch(error => next(error)) //Välitetään virheviesti eteenpäin middlewarelle
+})
+
+//../info kertoo pyynnön tekohetken sekä yhteystietojen lukumäärän
+app.get('/info', (req, res) => {  
+  Person.countDocuments(function(err, count){
+    res.send('<p>Puhelinluettelossa on ' + count.toString() +':n henkilön tiedot</p>' + '<p>' + new Date(Date.now()).toUTCString() + '</p>')
+  })  
 })
 
 //Uuden yhteystiedon lisääminen MondoDB tietokantaan
@@ -82,9 +88,6 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   const body = request.body
 
-  console.log("Nimi: ", body.name)
-  console.log("Nimi: ", body.number)
-
   const person ={
     name: body.name,
     number: body.number
@@ -92,6 +95,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updateNumber => {
+      console.log("Pävitys onnistui")
       response.json(updateNumber)
     })
     .catch(error => next(error))
@@ -109,42 +113,6 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 app.use(errorHandler)
-
-//Kovakoodattu puhelinluettelo
-let persons = [
-  {
-    name: 'Arto Hellas',
-    number: '040-123456',
-    id: 1
-  },
-  {
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-    id: 2,
-  },
-  {
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-    id: 3
-  },
-  {
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-    id: 4
-  },
-  {
-    name: 'Kurkkumopo',
-    number: '39-23-6423122',
-    id: 5
-  }
-]
-
-//../info kertoo pyynnön tekohetken sekä yhteystietojen lukumäärän
-app.get('/info', (req, res) => {
-  let pvm = new Date(Date.now()).toUTCString()
-  let teksti = "Puhelinluettelossa on " + persons.length +":n henkilön tiedot"
-  res.send('<p>'+ teksti +'</p>' + '<p>' + pvm + '</p>')
-})
 
 //Portti, jota kuunnellaan, jos ei ole .env -tiedostoa, niin const PORT = process.env.PORT || 3100
 const PORT = process.env.PORT

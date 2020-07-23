@@ -82,5 +82,5 @@ Virheidenkäsittely keskitetty middlewareen.
 ###### 3.17*: puhelinluettelo ja tietokanta, step5
 Jos frontendissä annetaan numero henkilölle, joka on jo olemassa, päivittää frontend tehtävässä 2.18 tehdyn toteutuksen ansiosta tiedot uudella numerolla tekemällä HTTP PUT -pyynnön henkilön tietoja vastaavaan url:iin.
 
-
-
+###### 3.18*: puhelinluettelo ja tietokanta, step6
+Päivitetty polkujen api/persons/:id ja /info käsittely.
