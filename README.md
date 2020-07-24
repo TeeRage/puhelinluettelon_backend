@@ -92,3 +92,7 @@ Jos HTTP POST -pyyntö yrittää lisätä nimeä, joka on jo puhelinluettelossa,
 ###### 3.20*: puhelinluettelo ja tietokanta, step8
 Laajennettu mongoosen validaatiota siten, että tietokantaan talletettavan nimen on oltava pituudeltaan vähintään 3 merkkiä ja puhelinnumeron vähintään 8 merkkiä.
 Laajennettu sovelluksen frontendia siten, että se antaa virheilmoituksen validoinnin epäonnistuessa.
+
+###### 3.21 tietokantaa käyttävä versio internettiin
+Generoitu päivitetystä sovelluksesta "full stack"-versio, eli tehty frontendista uusi production build ja kopioitu se backendin repositorioon.
+Uuusi versio pushattu Herokuun.
