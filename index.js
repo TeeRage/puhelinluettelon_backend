@@ -40,12 +40,6 @@ app.get('/info', (req, res) => {
 app.post('/api/persons', (request, response, next) => {
   
   const body = request.body
-  
-  if (!body.name || !body.number) { //Nimi tai numero puuttuu
-    return response.status(400).json({ 
-      error: 'name or number missing' 
-    })
-  }
 
   const person = new Person({
     name: body.name,
@@ -95,7 +89,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updateNumber => {
-      console.log("Pävitys onnistui")
+      console.log("Numeron pävitys onnistui")
       response.json(updateNumber)
     })
     .catch(error => next(error))
@@ -108,8 +102,9 @@ const errorHandler = (error, request, response, next) => {
   //Onko virhe CastError (virheellinen olioId) vai joku muu
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  }
-  //Jos ei ole CastError, siirretään Expressin oletusarvoisen virheidenkäsittelijän hoidettavavksi
+  } else if (error.name === 'ValidationError'){ //Validointivirhe
+    return response.status(400).json({error:error.message})
+  }//Jos ei ole CastError tai validointivirhe, siirretään Expressin oletusarvoisen virheidenkäsittelijän hoidettavavksi
   next(error)
 }
 app.use(errorHandler)
