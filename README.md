@@ -88,3 +88,7 @@ Päivitetty polkujen api/persons/:id ja /info käsittely.
 ###### 3.19: puhelinluettelo ja tietokanta, step7
 Asennettu paketti mongoose-unique-validator.
 Jos HTTP POST -pyyntö yrittää lisätä nimeä, joka on jo puhelinluettelossa, tulee vastauksena 'Person validation failed: name: Error, expected `name` to be unique. Value: `Erkki`'
+
+###### 3.20*: puhelinluettelo ja tietokanta, step8
+Laajennettu mongoosen validaatiota siten, että tietokantaan talletettavan nimen on oltava pituudeltaan vähintään 3 merkkiä ja puhelinnumeron vähintään 8 merkkiä.
+Laajennettu sovelluksen frontendia siten, että se antaa virheilmoituksen validoinnin epäonnistuessa.
