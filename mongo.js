@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose')
 
 //Käyttö vaatii salasanan syöttämisen komentoriville
@@ -27,12 +28,12 @@ const Person = mongoose.model('Person', personSchema)
 if (process.argv.length===3) {
   //Koska hakuehtona tyhjä olio {}, tuloksena tulee kaikki tulokset
   Person.find({}).then(result => {
-    console.log("Puhelinluettelon sisältö:")
+    console.log('Puhelinluettelon sisältö:')
     result.forEach(person => {
       console.log(person.name, person.number)
     })
     mongoose.connection.close()
-  })  
+  })
 }
 
 //Jos käyttäjä haluaa lisätä uusia nimiä puhelinluetteloon
@@ -49,7 +50,7 @@ if (process.argv.length>3) {
   })
 
   //save-metodi, tallentaa luodun yhteystiedon, ilmoittaa logiin ja sulkee yhteyden
-  person.save().then(response => {
+  person.save().then(() => {
     console.log('Henkilö lisätty puhelinluetteloon.')
     mongoose.connection.close()
   })

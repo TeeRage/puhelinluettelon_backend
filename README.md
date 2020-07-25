@@ -96,3 +96,6 @@ Laajennettu sovelluksen frontendia siten, että se antaa virheilmoituksen valido
 ###### 3.21 tietokantaa käyttävä versio internettiin
 Generoitu päivitetystä sovelluksesta "full stack"-versio, eli tehty frontendista uusi production build ja kopioitu se backendin repositorioon.
 Uuusi versio pushattu Herokuun.
+
+###### 3.22: lint-konfiguraatio
+Otettu käyttöön ESlint, ja korjattu tyylivirheet.

@@ -12,8 +12,8 @@ app.use(bodyParser.json())
 app.use(express.static('build'))
 app.use(express.json())
 
-//Konfiguroidaan Morgan logaamaan konsoliin, app.use(morgan('tiny')) 
-morgan.token('content', function(req, res) {return JSON.stringify(req.body)})
+//Konfiguroidaan Morgan logaamaan konsoliin, app.use(morgan('tiny'))
+morgan.token('content', function(req) {return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
 //aloitussivu
@@ -21,24 +21,24 @@ app.get('/', (req, res) => {
   res.send('<p>Puhelinluettelo</p>')
 })
 
-//MongoDB:stä haettu puhelinluettelon sisältö osoitteeseen http://localhost:3001/api/persons
+//MongoDB:stä haettu puhelinluettelon sisältö osoitteeseen .../api/persons
 app.get('/api/persons', (request, response, next) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
-  .catch(error => next(error)) //Välitetään virheviesti eteenpäin middlewarelle
+    .catch(error => next(error)) //Välitetään virheviesti eteenpäin middlewarelle
 })
 
 //../info kertoo pyynnön tekohetken sekä yhteystietojen lukumäärän
-app.get('/info', (req, res) => {  
-  Person.countDocuments(function(err, count){
+app.get('/info', (res) => {
+  Person.countDocuments(function(count){
     res.send('<p>Puhelinluettelossa on ' + count.toString() +':n henkilön tiedot</p>' + '<p>' + new Date(Date.now()).toUTCString() + '</p>')
-  })  
+  })
 })
 
 //Uuden yhteystiedon lisääminen MondoDB tietokantaan
 app.post('/api/persons', (request, response, next) => {
-  
+
   const body = request.body
 
   const person = new Person({
@@ -46,10 +46,10 @@ app.post('/api/persons', (request, response, next) => {
     number: body.number,
   })
 
-  person.save().then(savedPerson => {    
+  person.save().then(savedPerson => {
     response.json(savedPerson)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 //Yksittäisen yhteystiedon näyttäminen id:n perusteella
@@ -60,18 +60,18 @@ app.get('/api/persons/:id', (request, response, next) => {
         response.json(person)
       }
       else{
-        console.log("Annetulla haulla ei löytynyt tuloksia")
+        console.log('Annetulla haulla ei löytynyt tuloksia')
         response.status(404).end()
       }
-  })
-  .catch(error => next(error))
+    })
+    .catch(error => next(error))
 })
 
 //Poistaminen MongoDB-tietokannasta id:n perusteella
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {//Onnistunut joko poistettu tai ei löytynyt id:tä, mutta se on oikeaa muotoa
-      console.log("Poistaminen onnistui")
+    .then(() => {//Onnistunut joko poistettu tai ei löytynyt id:tä, mutta se on oikeaa muotoa
+      console.log('Poistaminen onnistui')
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -89,7 +89,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updateNumber => {
-      console.log("Numeron pävitys onnistui")
+      console.log('Numeron pävitys onnistui')
       response.json(updateNumber)
     })
     .catch(error => next(error))
@@ -103,13 +103,14 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError'){ //Validointivirhe
-    return response.status(400).json({error:error.message})
+    return response.status(400).json({ error:error.message })
   }//Jos ei ole CastError tai validointivirhe, siirretään Expressin oletusarvoisen virheidenkäsittelijän hoidettavavksi
   next(error)
 }
 app.use(errorHandler)
 
 //Portti, jota kuunnellaan, jos ei ole .env -tiedostoa, niin const PORT = process.env.PORT || 3100
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 
 app.listen(PORT, () => {
